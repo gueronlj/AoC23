@@ -53,39 +53,70 @@ const parseColors = (str, color) => {
     }
 }
 
-let total = 0
-
-for (const line of readData){
-
-    const map = {
-        "gameId": parseGameId(line),
-        "blues": 0,
-        "reds": 0,
-        "greens": 0
-    }
-
-    const roundsArr = parseRounds(line)
-    console.log(roundsArr);
-
-    for (const string of roundsArr){
-        //count colors
-        let blues = parseColors(string, 'blue');
-        let reds = parseColors(string, 'red');
-        let greens = parseColors(string, 'green');
-
-        //check validity of each round
-        if  ( !verify(blues, 'blue') || !verify((reds), 'red') || !verify(greens, 'green')){
-            //not valid so doint count this game
-            map.gameId = 0;
-        }
-         //get totals for each color per round
-        map.blues = map.blues += blues
-        map.reds = map.reds += reds
-        map.greens = map.greens += greens
-    }
-    console.log(map);
-    total += map.gameId
+const findTotalValidGames = () => {
+    let total = 0
+    for (const line of readData){
     
+        const map = {
+            "gameId": parseGameId(line),
+            "blues": 0,
+            "reds": 0,
+            "greens": 0
+        }
+    
+        const roundsArr = parseRounds(line)
+    
+        for (const string of roundsArr){
+            //count colors
+            let blues = parseColors(string, 'blue');
+            let reds = parseColors(string, 'red');
+            let greens = parseColors(string, 'green');
+    
+            //check validity of each round
+            if  ( !verify(blues, 'blue') || !verify((reds), 'red') || !verify(greens, 'green')){
+                //not valid so doint count this game
+                map.gameId = 0;
+            }
+            //get totals for each color per round
+            map.blues = map.blues += blues
+            map.reds = map.reds += reds
+            map.greens = map.greens += greens
+        }
+
+        console.log(map);
+        total += map.gameId
+    }
+    console.log(total);
 }
 
-console.log(total);
+const totalPowerOfGames = () => {
+
+    let total = 0;
+
+    for (const line of readData){
+
+        const gameMap = {
+            "blues": [],
+            "reds": [],
+            "greens": [],
+        }
+
+        const roundsArray = parseRounds(line);
+        //get number of each color in a round, push it to GameMap
+        for (const round of roundsArray){
+            gameMap.blues.push(parseColors(round, 'blue'));
+            gameMap.reds.push(parseColors(round, 'red'));
+            gameMap.greens.push(parseColors(round, 'green'));
+        }
+
+        let blueMin = Math.max(...gameMap.blues)
+        let redMin = Math.max(...gameMap.reds)
+        let greenMin = Math.max(...gameMap.greens)
+
+       const gamePower = blueMin * redMin * greenMin;
+       total += gamePower
+    }
+    console.log(total);
+}
+//findTotalValidGames();
+totalPowerOfGames();
