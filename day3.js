@@ -32,6 +32,7 @@ const fillGrid = () => {
       for (let j = 0; j<grid[i].length; j++){
          grid[i][j] = readData[i].split('')[j];
       }
+      grid[i][grid[i].length-1] = '.'; //add a '.' to the end of each line
    }
 }
 
@@ -147,15 +148,15 @@ for ( const marker of markerLocations()){
       findRestofNumber(x, y)   
    }
    //check top-left for number
-   if ( !isNaN(grid[y-1][x-1]) ){
+   if (grid[y-1] !== undefined && !isNaN(grid[y-1][x-1])) {
       findRestofNumber(x, y-1)
-   }
+    }
    //check above for number
-   if ( !isNaN(grid[y-1][x]) ){
+   if (grid[y-1] !== undefined && !isNaN(grid[y-1][x]) ){
       findRestofNumber(x, y-1)
    }
    //check top-right
-   if ( !isNaN(grid[y-1][x+1]) ){
+   if (grid[y-1] !== undefined && !isNaN(grid[y-1][x+1]) ){
       findRestofNumber(x, y-1)
    }
    //check right
@@ -163,15 +164,15 @@ for ( const marker of markerLocations()){
       findRestofNumber(x, y)
    }
    //check bottom-right
-   if ( !isNaN(grid[y+1][x+1]) ){
+   if (grid[y+1] !== undefined && !isNaN(grid[y+1][x+1]) ){
       findRestofNumber(x, y+1)
    }
    //check below
-   if( !isNaN(grid[y+1][x]) ){
+   if(grid[y+1] !== undefined && !isNaN(grid[y+1][x]) ){
       findRestofNumber(x, y+1)
    }
    //check bottom-left
-   if ( !isNaN(grid[y+1][x-1]) ){
+   if (grid[y+1] !== undefined && !isNaN(grid[y+1][x-1]) ){
       findRestofNumber(x, y+1)
    }   
 }
@@ -184,11 +185,10 @@ for (const set of partsList){
 }
 
 removeTwins(flatList);
-const set = new Set(flatList);
+//const set = new Set(flatList);
 let total = 0;
-for (const num of set){
+for (const num of flatList){
    total += parseInt(num);
 }
-
-console.log(set);
+console.log(flatList);
 console.log(total);
